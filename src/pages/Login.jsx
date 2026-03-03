@@ -15,8 +15,14 @@ export default function Login() {
       localStorage.setItem("refresh", res.data.refresh);
       alert("Login success ✅");
       navigate("/");
-    } catch (e2) {
-      alert(e2?.response?.data?.detail || "Login failed");
+    } catch (err) {
+      console.log("LOGIN ERROR:", err?.response?.data || err.message);
+      const msg =
+        err?.response?.data?.detail ||
+        err?.response?.data?.non_field_errors?.[0] ||
+        err.message ||
+        "Login failed";
+      alert(msg);
     }
   };
 

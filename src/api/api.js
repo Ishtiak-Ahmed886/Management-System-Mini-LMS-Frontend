@@ -5,8 +5,17 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("access");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  const url = config.url || "";
+
+  // ✅ Login/Register এ token লাগবে না (old token problem fix)
+  const isAuthEndpoint =
+    url.includes("/api/login/") || url.includes("/api/refresh/") || url.includes("/api/register/");
+
+  if (!isAuthEndpoint) {
+    const token = localStorage.getItem("access");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+  }
+
   return config;
 });
 
