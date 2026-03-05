@@ -25,6 +25,23 @@ export default function App() {
       </nav>
 
       <Routes>
+      <Route
+  path="/instructor"
+  element={
+    <ProtectedRoute>
+      <InstructorDashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/instructor/courses/:id/lessons"
+  element={
+    <ProtectedRoute>
+      <InstructorLessons />
+    </ProtectedRoute>
+  }
+/>  
         <Route
   path="/my-enrollments"
   element={

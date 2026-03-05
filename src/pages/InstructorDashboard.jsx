@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import api from "../api/api";
 import { Link } from "react-router-dom";
+import api from "../api/api";
 
 export default function InstructorDashboard() {
   const [title, setTitle] = useState("");
@@ -13,13 +13,7 @@ export default function InstructorDashboard() {
       setLoading(true);
       const res = await api.get("/api/courses/");
       const items = res.data.results ?? res.data;
-
-      const myUsername = localStorage.getItem("username");
-      const myCourses = myUsername
-        ? items.filter((c) => c.instructor === myUsername)
-        : items;
-
-      setCourses(myCourses);
+      setCourses(items);
     } catch (e) {
       alert(e?.response?.data?.detail || "Courses load failed");
     } finally {
@@ -33,43 +27,55 @@ export default function InstructorDashboard() {
 
   const createCourse = async (e) => {
     e.preventDefault();
+
+    if (!title.trim()) return alert("Title required");
+    if (!description.trim()) return alert("Description required");
+
     try {
-      await api.post("/api/courses/", { title, description });
+      await api.post("/api/courses/", {
+        title,
+        description,
+      });
+
       alert("Course created ✅");
       setTitle("");
       setDescription("");
-      await loadCourses();
-    } catch (e2) {
-      alert(e2?.response?.data?.detail || "Create failed");
+      loadCourses();
+    } catch (e) {
+      alert(e?.response?.data?.detail || "Create failed");
     }
   };
 
   return (
-    <div>
+    <div style={{ padding: 20 }}>
       <h2>Instructor Dashboard</h2>
 
       <h3>Create Course</h3>
       <form onSubmit={createCourse}>
         <input
-          placeholder="Course title"
+          placeholder="Course Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          required
+          style={{ width: 320 }}
         />
         <br />
+        <br />
         <textarea
-          placeholder="Course description"
+          placeholder="Course Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          required
           rows={4}
-          style={{ width: "100%" }}
+          style={{ width: 320 }}
         />
+        <br />
         <br />
         <button type="submit">Create</button>
       </form>
 
-      <h3 style={{ marginTop: 20 }}>My Courses</h3>
+      <hr style={{ margin: "20px 0" }} />
+
+      <h3>All Courses</h3>
+
       {loading ? (
         <p>Loading...</p>
       ) : courses.length === 0 ? (
@@ -77,9 +83,11 @@ export default function InstructorDashboard() {
       ) : (
         <ul>
           {courses.map((c) => (
-            <li key={c.id}>
-              <Link to={`/courses/${c.id}`}>{c.title}</Link>{" "}
-              | <Link to={`/instructor/course/${c.id}/lessons`}>Manage Lessons</Link>
+            <li key={c.id} style={{ marginBottom: 8 }}>
+              <b>{c.title}</b> — {c.instructor}{" "}
+              <Link to={`/instructor/courses/${c.id}/lessons`}>
+                Manage Lessons
+              </Link>
             </li>
           ))}
         </ul>

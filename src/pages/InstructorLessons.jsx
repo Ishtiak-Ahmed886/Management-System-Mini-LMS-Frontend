@@ -4,89 +4,126 @@ import api from "../api/api";
 
 export default function InstructorLessons() {
   const { id } = useParams(); // course id
+
   const [lessons, setLessons] = useState([]);
   const [title, setTitle] = useState("");
-  const [video_url, setVideoUrl] = useState("");
-  const [duration, setDuration] = useState(5);
-  const [order, setOrder] = useState(1);
+  const [videoUrl, setVideoUrl] = useState("");
+  const [duration, setDuration] = useState("");
+  const [order, setOrder] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const load = async () => {
-    const res = await api.get(`/api/courses/${id}/lessons/`);
-    setLessons(res.data.results ?? res.data);
+  const loadLessons = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get(`/api/courses/${id}/lessons/`);
+      const items = res.data.results ?? res.data;
+      setLessons(items);
+    } catch (e) {
+      alert(e?.response?.data?.detail || "Lessons load failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    load();
+    loadLessons();
   }, [id]);
 
   const addLesson = async (e) => {
     e.preventDefault();
+
+    if (!title.trim()) return alert("Title required");
+    if (!videoUrl.trim()) return alert("Video URL required");
+
     try {
       await api.post(`/api/courses/${id}/lessons/`, {
         title,
-        video_url,
-        duration: Number(duration),
-        order: Number(order),
+        video_url: videoUrl,
+        duration: Number(duration || 0),
+        order: Number(order || 1),
       });
+
       alert("Lesson added ✅");
       setTitle("");
       setVideoUrl("");
-      setDuration(5);
-      setOrder((prev) => Number(prev) + 1);
-      await load();
-    } catch (e2) {
-      alert(e2?.response?.data?.detail || "Add lesson failed");
+      setDuration("");
+      setOrder("");
+      loadLessons();
+    } catch (e) {
+      alert(e?.response?.data?.detail || "Add lesson failed");
+    }
+  };
+
+  const deleteLesson = async (lessonId) => {
+    if (!confirm("Delete this lesson?")) return;
+
+    try {
+      await api.delete(`/api/lessons/${lessonId}/`);
+      alert("Lesson deleted ✅");
+      loadLessons();
+    } catch (e) {
+      alert(e?.response?.data?.detail || "Delete failed");
     }
   };
 
   return (
-    <div>
-      <Link to={`/instructor`}>← Back to Dashboard</Link>
+    <div style={{ padding: 20 }}>
+      <Link to="/instructor">← Back</Link>
+
       <h2>Manage Lessons (Course #{id})</h2>
 
       <h3>Add Lesson</h3>
       <form onSubmit={addLesson}>
         <input
-          placeholder="Title"
+          placeholder="Lesson Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          required
+          style={{ width: 420 }}
         />
         <br />
+        <br />
+
         <input
-          placeholder="Video URL"
-          value={video_url}
+          placeholder="YouTube/Vimeo URL"
+          value={videoUrl}
           onChange={(e) => setVideoUrl(e.target.value)}
-          required
+          style={{ width: 420 }}
         />
         <br />
+        <br />
+
         <input
-          type="number"
-          placeholder="Duration"
+          placeholder="Duration (minutes)"
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
-          required
-        />
-        <br />
+          style={{ width: 200 }}
+        />{" "}
         <input
-          type="number"
           placeholder="Order"
           value={order}
           onChange={(e) => setOrder(e.target.value)}
-          required
+          style={{ width: 200 }}
         />
         <br />
-        <button type="submit">Add</button>
+        <br />
+
+        <button type="submit">Add Lesson</button>
       </form>
 
-      <h3 style={{ marginTop: 20 }}>Lessons</h3>
-      {lessons.length === 0 ? (
-        <p>No lessons.</p>
+      <hr style={{ margin: "20px 0" }} />
+
+      <h3>Lessons</h3>
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : lessons.length === 0 ? (
+        <p>No lessons yet.</p>
       ) : (
         <ol>
           {lessons.map((l) => (
-            <li key={l.id}>
-              {l.title} (order {l.order})
+            <li key={l.id} style={{ marginBottom: 8 }}>
+              <b>{l.title}</b> (order: {l.order}, {l.duration} min){" "}
+              <button onClick={() => deleteLesson(l.id)}>Delete</button>
             </li>
           ))}
         </ol>
