@@ -1,50 +1,90 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 
 export default function Login() {
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
+
+  // ✅ If already logged in, redirect
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate]);
+
 
   const submit = async (e) => {
     e.preventDefault();
+
     try {
-      const res = await api.post("/api/login/", { username, password });
+
+      setLoading(true);
+
+      const res = await api.post("/api/login/", {
+        username,
+        password,
+      });
+
+      // ✅ Save tokens
       localStorage.setItem("access", res.data.access);
       localStorage.setItem("refresh", res.data.refresh);
-      alert("Login success ✅");
+
+      alert("Login successful ✅");
+
+      // redirect after login
       navigate("/");
+
     } catch (err) {
-      console.log("LOGIN ERROR:", err?.response?.data || err.message);
-      const msg =
-        err?.response?.data?.detail ||
-        err?.response?.data?.non_field_errors?.[0] ||
-        err.message ||
-        "Login failed";
-      alert(msg);
+
+      alert(err?.response?.data?.detail || "Login failed");
+
+    } finally {
+
+      setLoading(false);
+
     }
   };
 
+
   return (
-    <div>
+    <div style={{ padding: 20 }}>
+
       <h2>Login</h2>
+
       <form onSubmit={submit}>
+
         <input
-          placeholder="username"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+
         <br />
+        <br />
+
         <input
-          placeholder="password"
+          placeholder="Password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
         <br />
-        <button type="submit">Login</button>
+        <br />
+
+        <button disabled={loading} type="submit">
+          {loading ? "Logging in..." : "Login"}
+        </button>
+
       </form>
+
     </div>
   );
 }
