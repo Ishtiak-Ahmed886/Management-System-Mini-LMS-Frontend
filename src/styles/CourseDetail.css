@@ -1,0 +1,140 @@
+/* Page Layout */
+
+.course-container{
+  display:flex;
+  justify-content:center;
+  padding:40px;
+  background:#f5f7fb;
+  min-height:100vh;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+/* Back button */
+
+.back-btn{
+  position:absolute;
+  left:40px;
+  top:30px;
+  text-decoration:none;
+  color:#555;
+  font-weight:600;
+}
+
+.back-btn:hover{
+  color:#000;
+}
+
+/* Card */
+
+.course-card{
+  width:650px;
+  background:white;
+  border-radius:12px;
+  padding:30px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Title */
+
+.course-title{
+  margin-bottom:10px;
+  font-size:28px;
+}
+
+/* Description */
+
+.course-description{
+  color:#666;
+  margin-bottom:15px;
+}
+
+/* Instructor */
+
+.course-instructor{
+  margin-bottom:20px;
+}
+
+/* Enroll button */
+
+.enroll-btn{
+  background:#4f46e5;
+  color:white;
+  border:none;
+  padding:10px 22px;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.enroll-btn:hover{
+  background:#3730a3;
+}
+
+/* Progress section */
+
+.progress-section{
+  margin-top:20px;
+}
+
+.progress-text{
+  margin-bottom:8px;
+}
+
+/* Progress bar */
+
+.progress-bar{
+  width:100%;
+  height:12px;
+  background:#e5e7eb;
+  border-radius:8px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  background:#22c55e;
+  transition:width 0.3s ease;
+}
+
+/* Lessons */
+
+.lesson-title{
+  margin-top:25px;
+  margin-bottom:10px;
+}
+
+/* Lesson list */
+
+.lesson-list{
+  padding-left:18px;
+}
+
+.lesson-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 0;
+  border-bottom:1px solid #eee;
+}
+
+/* Open button */
+
+.lesson-btn{
+  background:#2563eb;
+  color:white;
+  padding:5px 12px;
+  border-radius:5px;
+  text-decoration:none;
+  font-size:14px;
+}
+
+.lesson-btn:hover{
+  background:#1d4ed8;
+}
+
+/* No lessons */
+
+.no-lessons{
+  color:#888;
+}

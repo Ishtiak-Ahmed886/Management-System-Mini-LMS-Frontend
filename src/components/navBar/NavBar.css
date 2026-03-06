@@ -1,0 +1,51 @@
+/* Import Lobster font */
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+/* Navbar container */
+
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 40px;
+  background:#111827;
+  color:white;
+}
+
+/* Logo */
+
+.logo{
+  font-family:'Lobster', cursive;
+  font-size:32px;
+  letter-spacing:1px;
+}
+
+/* Navigation */
+
+.nav-links{
+  display:flex;
+  gap:20px;
+}
+
+/* Links */
+
+.nav-links a{
+  text-decoration:none;
+  color:#e5e7eb;
+  font-weight:500;
+  transition:0.2s;
+}
+
+.nav-links a:hover{
+  color:#ffffff;
+}
+
+/* Logout style */
+
+.logout{
+  color:#f87171;
+}
+
+.logout:hover{
+  color:#ef4444;
+}

@@ -1,0 +1,71 @@
+
+
+/* Card */
+
+.course-card{
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  transition:0.25s;
+}
+
+.course-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* Thumbnail */
+
+.course-thumbnail{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+}
+
+/* Content */
+
+.course-content{
+  padding:18px;
+}
+
+/* Title */
+
+.course-title{
+  margin-bottom:8px;
+  font-size:18px;
+}
+
+.course-title a{
+  text-decoration:none;
+  color:#111827;
+}
+
+.course-title a:hover{
+  color:#2563eb;
+}
+
+/* Instructor */
+
+.course-instructor{
+  color:#6b7280;
+  margin-bottom:14px;
+  font-size:14px;
+}
+
+/* Button */
+
+.course-btn{
+  display:inline-block;
+  text-decoration:none;
+  background:#2563eb;
+  color:white;
+  padding:8px 16px;
+  border-radius:6px;
+  font-size:14px;
+  transition:0.2s;
+}
+
+.course-btn:hover{
+  background:#1d4ed8;
+}

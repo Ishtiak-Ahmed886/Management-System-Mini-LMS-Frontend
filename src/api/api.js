@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  // baseURL: "http://127.0.0.1:8000",
+  baseURL: "https://management-system-mini-lms-backend.onrender.com",
 });
 
 // ✅ Request: attach access token if exists
@@ -38,7 +39,8 @@ api.interceptors.response.use(
       try {
         // ✅ refresh token request (NO api instance to avoid loop)
         const refreshRes = await axios.post(
-          "http://127.0.0.1:8000/api/refresh/",
+          // "http://127.0.0.1:8000/api/refresh/",
+          "https://management-system-mini-lms-backend.onrender.com/api/refresh/",
           { refresh }
         );
 

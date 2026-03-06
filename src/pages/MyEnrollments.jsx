@@ -54,68 +54,69 @@ export default function MyEnrollments() {
     load();
   }, [navigate]);
 
-  if (loading) return <p>Loading...</p>;
+ 
+  if (loading) return <p className="loading">Loading...</p>;
 
-  return (
-    <div>
-      <h2>My Enrolled Courses</h2>
+return (
+  <div className="enroll-page">
+    <h2 className="page-title">My Enrolled Courses</h2>
 
-      {items.length === 0 ? (
-        <p>No enrollments yet.</p>
-      ) : (
-        <ul style={{ paddingLeft: 18 }}>
-          {items.map((en) => {
-            const courseId =
-              typeof en.course === "object" ? en.course?.id : en.course;
+    {items.length === 0 ? (
+      <p className="empty-text">No enrollments yet.</p>
+    ) : (
+      <div className="course-list">
+        {items.map((en) => {
+          const courseId =
+            typeof en.course === "object" ? en.course?.id : en.course;
 
-            const courseTitle =
-              en.course_title ||
-              (typeof en.course === "object"
-                ? en.course?.title
-                : `Course #${courseId}`);
+          const courseTitle =
+            en.course_title ||
+            (typeof en.course === "object"
+              ? en.course?.title
+              : `Course #${courseId}`);
 
-            const pr = progressMap[courseId];
+          const pr = progressMap[courseId];
 
-            return (
-              <li key={en.id} style={{ marginBottom: 14 }}>
-                <Link to={`/courses/${courseId}`}>{courseTitle}</Link>{" "}
-                <small>
-                  ({en.enrolled_at
-                    ? new Date(en.enrolled_at).toLocaleString()
-                    : "N/A"})
-                </small>
+          return (
+            <div className="course-card" key={en.id}>
+              <div className="course-info">
 
-                {/* ✅ Progress UI */}
+                <h3>
+                  <Link to={`/courses/${courseId}`}>
+                    {courseTitle}
+                  </Link>
+                </h3>
+
+                <p className="enroll-date">
+                  Enrolled:{" "}
+                  {en.enrolled_at
+                    ? new Date(en.enrolled_at).toLocaleDateString()
+                    : "N/A"}
+                </p>
+
                 {pr && (
-                  <div style={{ marginTop: 6 }}>
-                    <small>
-                      Progress: {pr.completed_lessons}/{pr.total_lessons} (
-                      {pr.progress_percent}%)
-                    </small>
+                  <div className="progress-section">
 
-                    <div
-                      style={{
-                        width: 260,
-                        height: 10,
-                        border: "1px solid #ccc",
-                        marginTop: 4,
-                      }}
-                    >
+                    <div className="progress-text">
+                      {pr.completed_lessons}/{pr.total_lessons} lessons
+                      ({pr.progress_percent}%)
+                    </div>
+
+                    <div className="progress-bar">
                       <div
-                        style={{
-                          width: `${pr.progress_percent}%`,
-                          height: "100%",
-                          background: "green",
-                        }}
+                        className="progress-fill"
+                        style={{ width: `${pr.progress_percent}%` }}
                       />
                     </div>
+
                   </div>
                 )}
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </div>
-  );
+
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    )}
+  </div>)
 }

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/api";
+import Courses from "./Courses";
 
 export default function InstructorDashboard() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,12 +36,13 @@ export default function InstructorDashboard() {
     try {
       await api.post("/api/courses/", {
         title,
-        description,
+        description,thumbnail
       });
 
       alert("Course created ✅");
       setTitle("");
       setDescription("");
+      setThumbnail("")
       loadCourses();
     } catch (e) {
       alert(e?.response?.data?.detail || "Create failed");
@@ -48,49 +51,63 @@ export default function InstructorDashboard() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>Instructor Dashboard</h2>
+      <div className="dashboard">
 
-      <h3>Create Course</h3>
-      <form onSubmit={createCourse}>
+  <h2 className="dashboard-title">Instructor Dashboard</h2>
+
+  <div className="create-course-card">
+
+    <h3>Create Course</h3>
+
+    <form onSubmit={createCourse} className="course-form">
+
+      <div className="form-group">
+        <label>Course Title</label>
         <input
-          placeholder="Course Title"
+          type="text"
+          placeholder="Enter course title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          style={{ width: 320 }}
         />
-        <br />
-        <br />
+      </div>
+
+      <div className="form-group">
+        <label>Course Description</label>
         <textarea
-          placeholder="Course Description"
+          placeholder="Enter course description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={4}
-          style={{ width: 320 }}
         />
-        <br />
-        <br />
-        <button type="submit">Create</button>
-      </form>
+      </div>
 
-      <hr style={{ margin: "20px 0" }} />
+      <div className="form-group">
+        <label>Course Thumbnail</label>
+      <input
+  type="text"
+  placeholder="Thumbnail Image URL"
+  value={thumbnail}
+  onChange={(e) => setThumbnail(e.target.value)}
+/>
+      </div>
 
-      <h3>All Courses</h3>
+      <button type="submit" className="create-btn">
+        Create Course
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
 
       {loading ? (
         <p>Loading...</p>
       ) : courses.length === 0 ? (
         <p>No courses yet.</p>
       ) : (
-        <ul>
-          {courses.map((c) => (
-            <li key={c.id} style={{ marginBottom: 8 }}>
-              <b>{c.title}</b> — {c.instructor}{" "}
-              <Link to={`/instructor/courses/${c.id}/lessons`}>
-                Manage Lessons
-              </Link>
-            </li>
-          ))}
-        </ul>
+       <Courses/>
       )}
     </div>
   );

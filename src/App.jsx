@@ -9,20 +9,12 @@ import InstructorDashboard from "./pages/InstructorDashboard";
 import InstructorLessons from "./pages/InstructorLessons";
 import Logout from "./pages/Logout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/navBar/NavBar";
 
 export default function App() {
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: 20 }}>
-      <h1>Mini LMS</h1>
-
-      <nav style={{ marginBottom: 20 }}>
-        <Link to="/instructor">Instructor</Link>
-        <Link to="/">Courses</Link> {" | "}
-        <Link to="/login">Login</Link> {" | "}
-        <Link to="/register">Register</Link> {" | "}
-        <Link to="/my-enrollments">My Enrollments</Link>
-        <Link to="/logout">Logout</Link>
-      </nav>
+    <div >
+      <Navbar/>
 
       <Routes>
       <Route

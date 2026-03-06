@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../api/api";
+import CourseDetailsCard from "../components/courses/CourseDetailsCard";
 
 export default function CourseDetails() {
   const { id } = useParams();
@@ -62,53 +63,16 @@ export default function CourseDetails() {
   if (!course) return <p>Course not found</p>;
 
   return (
-    <div>
-      <Link to="/">← Back</Link>
-
-      <h2>{course.title}</h2>
-      <p>{course.description}</p>
-
-      <p>
-        <b>Instructor:</b> {course.instructor}
-      </p>
-
-      <button onClick={enroll} disabled={enrolling}>
-        {enrolling ? "Enrolling..." : "Enroll"}
-      </button>
-
-{progress && (
-  <div style={{ marginTop: 15 }}>
-    <p>
-      <b>Progress:</b> {progress.completed_lessons} / {progress.total_lessons} (
-      {progress.progress_percent}%)
-    </p>
-
-    <div style={{ width: 320, height: 12, border: "1px solid #ccc" }}>
-      <div
-        style={{
-          height: "100%",
-          width: `${progress.progress_percent}%`,
-          background: "green",
-        }}
+    <div style={{ padding: "2rem" }}>
+      <Link to="/" className="back-link">← Back to Courses</Link>
+      <br />
+      <CourseDetailsCard 
+  course={course}
+  lessons={lessons}
+  progress={progress}
+  enroll={enroll}
+  enrolling={enrolling}
       />
-    </div>
-  </div>
-)}
-
-      <h3>Lessons</h3>
-
-      {lessons.length === 0 ? (
-        <p>No lessons yet.</p>
-      ) : (
-        <ol>
-          {lessons.map((l) => (
-            <li key={l.id}>
-              {l.title} ({l.duration} min){" "}
-              <Link to={`/lesson/${l.id}`}>Open</Link>
-            </li>
-          ))}
-        </ol>
-      )}
     </div>
   );
 }

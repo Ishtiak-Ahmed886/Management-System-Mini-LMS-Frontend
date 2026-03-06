@@ -103,42 +103,46 @@ export default function LessonViewer() {
   if (!lesson) return <p>Lesson not found</p>;
 
   return (
-    <div>
-      <Link to={-1}>← Back</Link>
+    <div className="lesson-page">
+  <div className="lesson-card">
 
-      <h2 style={{ marginTop: 10 }}>{lesson.title}</h2>
+    <Link to={-1} className="back-link">← Back To Course</Link>
 
-      <p>
-        <b>Duration:</b> {lesson.duration} minutes
-      </p>
+    <h2 className="lesson-title">{lesson.title}</h2>
 
-      {/* ✅ Video Embed */}
-      {embedUrl ? (
-        <div style={{ marginTop: 20 }}>
-          <iframe
-            width="700"
-            height="400"
-            src={embedUrl}
-            title="Lesson Video"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-          <p style={{ marginTop: 8 }}>
-            <a href={lesson.video_url} target="_blank" rel="noreferrer">
-              Open original link
-            </a>
-          </p>
-        </div>
-      ) : (
-        <p style={{ marginTop: 20 }}>No video URL provided.</p>
-      )}
+    <p className="lesson-duration">
+      <b>Duration:</b> {lesson.duration} minutes
+    </p>
 
-      <div style={{ marginTop: 20 }}>
-        <button onClick={markComplete} disabled={completed || marking}>
-          {completed ? "Completed ✅" : marking ? "Marking..." : "Mark Complete"}
-        </button>
+    {/* Video */}
+    {embedUrl ? (
+      <div className="video-wrapper">
+        <iframe
+          src={embedUrl}
+          title="Lesson Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
       </div>
-    </div>
+    ) : (
+      <p className="no-video">No video URL provided.</p>
+    )}
+
+    <p className="open-link">
+      <a href={lesson.video_url} target="_blank" rel="noreferrer">
+        Open original link
+      </a>
+    </p>
+
+    <button
+      className={`complete-btn ${completed ? "done" : ""}`}
+      onClick={markComplete}
+      disabled={completed || marking}
+    >
+      {completed ? "Completed ✅" : marking ? "Marking..." : "Mark Complete"}
+    </button>
+
+  </div>
+</div>
   );
 }

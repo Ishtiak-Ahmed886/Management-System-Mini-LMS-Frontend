@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api/api";
+import { User,Lock, LogIn, UserRoundPlus } from 'lucide-react';
+
 
 export default function Login() {
 
@@ -20,7 +22,7 @@ export default function Login() {
   }, [navigate]);
 
 
-  const submit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -54,36 +56,58 @@ export default function Login() {
 
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{
+      height: "100vh",
+      display:"flex",
+      justifyContent: "center",
+      alignItems: "center"
+    }}>
 
-      <h2>Login</h2>
+      <form className="form" onSubmit={handleSubmit}>
 
-      <form onSubmit={submit}>
+      <h2 id="heading">Login</h2>
+
+      <div className="field">
+
+       <User/>
 
         <input
           placeholder="Username"
+          className="input-field"
+          type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
 
-        <br />
-        <br />
+      </div>
+
+      <div className="field">
+
+       <Lock />
 
         <input
           placeholder="Password"
+          className="input-field"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <br />
-        <br />
+      </div>
 
-        <button disabled={loading} type="submit">
-          {loading ? "Logging in..." : "Login"}
+      <div className="btn">
+        <button type="submit" className="button1">
+         <LogIn/> Login
         </button>
+<Link to="/register" style={{ textDecoration: "none" }}>
+        <button type="button" className="button2">
+         <UserRoundPlus /> Sign Up
+        </button>
+</Link>
+      </div>
 
-      </form>
+
+    </form>
 
     </div>
   );

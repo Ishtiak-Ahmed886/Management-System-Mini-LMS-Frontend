@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import api from "../api/api";
+import CourseCard from "../components/courses/CourseCard";
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);
@@ -22,15 +22,14 @@ export default function Courses() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h2>Courses</h2>
-      <ul>
+    <div style={{ padding: "2rem" }}>
+      <h2>All Courses</h2>
+      <hr />
+      <div className="course-grid">
         {courses.map((c) => (
-          <li key={c.id}>
-  <Link to={`/courses/${c.id}`}>{c.title}</Link> — {c.instructor}
-</li>
+          <CourseCard key={c.id} c={c} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
